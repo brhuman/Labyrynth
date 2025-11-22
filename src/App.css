@@ -40,3 +40,40 @@
 .read-the-docs {
   color: #888;
 }
+
+.steps-counter {
+  margin: 10px auto 6px;
+  text-align: center;
+  font-size: 18px;
+  color: #ffcc00;
+  font-weight: 600;
+  text-shadow: 0 0 4px #ffcc00aa;
+}
+
+.hud {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 10px auto 6px;
+  font-size: 16px;
+  color: #eee;
+}
+
+.steps-counter span {
+  color: #ffcc00;
+  font-weight: 600;
+  text-shadow: 0 0 4px #ffcc00aa;
+}
+
+.time-counter span {
+  color: #4caf50;
+  font-weight: 600;
+  text-shadow: 0 0 4px #4caf50aa;
+}
+
+/* в EndGame.css добавь */
+.end-time {
+  color: #4caf50;
+  font-weight: 700;
+  text-shadow: 0 0 6px #4caf50aa;
+}

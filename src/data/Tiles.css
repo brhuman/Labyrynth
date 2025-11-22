@@ -1,0 +1,131 @@
+
+.cell {
+	display: block;
+  width: 24px;
+  height: 24px;
+  position: relative;
+	border: initial !important;
+}
+
+.cell.wall {
+  background-color: hsl(25, 20%, calc(20% + var(--v) * 0.3%));
+  filter: brightness(calc(0.99 + var(--v) * 0.001));
+}
+
+.cell.wall::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  image-rendering: pixelated;
+  mix-blend-mode: soft-light;
+  opacity: 0.9;
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, calc(0.22 + var(--v) * 0.004)) 0 3px,
+      transparent 3px 5px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255, calc(0.06 + var(--v) * 0.003)) 0 calc(6px + var(--v) * 0.3px),
+      rgba(0,0,0, calc(0.14 + var(--v) * 0.005)) 0 calc(7px + var(--v) * 0.3px)
+    );
+}
+
+
+.cell.ground {
+  background-color: hsl(calc(100deg + var(--v) * 3deg), 55%, 40%);
+  filter: brightness(calc(0.65 + var(--v) * 0.01));
+}
+.cell.ground::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  image-rendering: pixelated;
+  mix-blend-mode: soft-light;
+  opacity: 0.85;
+
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255, calc(0.04 + var(--v) * 0.002)) 0 1px,
+      transparent 1px calc(3px + var(--v) * 0.1px)
+    ),
+    repeating-linear-gradient(
+      80deg,
+      rgba(0,0,0, calc(0.05 + var(--v) * 0.002)) 0 1px,
+      transparent 1px calc(4px + var(--v) * 0.1px)
+    ),
+    repeating-linear-gradient(
+      100deg,
+      rgba(255,255,255, calc(0.03 + var(--v) * 0.001)) 0 1px,
+      transparent 1px calc(5px + var(--v) * 0.1px)
+    );
+}
+
+.cell.water {
+  background-color: hsl(calc(205deg + var(--v) * 0.2deg), 70%, 52%);
+  filter: brightness(calc(0.98 + var(--v) * 0.001));
+}
+
+.cell.water::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  image-rendering: pixelated;
+  mix-blend-mode: soft-light;
+  opacity: 0.65;
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255, calc(0.02 + var(--v) * 0.002)) 0 1px,
+      transparent 1px calc(3px + var(--v) * 0.2px)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0, calc(0.03 + var(--v) * 0.002)) 0 1px,
+      transparent 1px calc(4px + var(--v) * 0.2px)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255, calc(0.015 + var(--v) * 0.001)) 0 1px,
+      transparent 1px calc(6px + var(--v) * 0.2px)
+    );
+}
+
+
+.v_0  { --v: 0; }
+.v_1  { --v: 1; }
+.v_2  { --v: 2; }
+.v_3  { --v: 3; }
+.v_4  { --v: 4; }
+.v_5  { --v: 5; }
+.v_6  { --v: 6; }
+.v_7  { --v: 7; }
+.v_8  { --v: 8; }
+.v_9  { --v: 9; }
+
+/* старт / выход / персонаж */
+.cell.start {
+  background: #ffeb3b;
+}
+
+.cell.exit {
+  background: #ff5722;
+}
+
+.cell.player {
+  background: #fff;
+  border-radius: 50%;
+  border: 2px solid #000;
+}
+
+/* на всякий случай */
+.cell.unknown {
+  background: magenta;
+} 

@@ -1,0 +1,113 @@
+/* StatsTable.css */
+.stats-table-wrapper {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: #111827;
+  border-radius: 12px;
+  border: 1px solid #1f2937;
+}
+
+.stats-table-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+	display: flex;
+	justify-content: center;
+}
+
+.stats-table-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #e5e7eb;
+
+}
+
+.stats-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.stats-controls button {
+  border: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #111827;
+  color: #e5e7eb;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.stats-controls button:hover {
+  background: #1f2937;
+  transform: translateY(-1px);
+}
+
+.stats-controls button.active {
+  background: #2563eb;
+  color: #f9fafb;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+.stats-table thead {
+  background: #030712;
+}
+
+.stats-table th,
+.stats-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid #1f2937;
+}
+
+.stats-table tbody tr:nth-child(even) {
+  background: #020617;
+}
+
+.stats-table tbody tr:nth-child(odd) {
+  background: #020617;
+}
+
+.stats-table tbody tr:hover {
+  background: #111827;
+}
+
+.stats-table th:first-child,
+.stats-table td:first-child {
+  width: 40px;
+  text-align: center;
+}
+
+.stats-empty {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* Кнопка очистки рядом со статистикой */
+.end-btn-clear {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #f97316;
+  background: transparent;
+  color: #f97316;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.end-btn-clear:hover {
+  background: rgba(249, 115, 22, 0.1);
+}

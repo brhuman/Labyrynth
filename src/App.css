@@ -42,7 +42,7 @@
 }
 
 .steps-counter {
-  margin: 10px auto 6px;
+  margin: ;
   text-align: center;
   font-size: 18px;
   color: #ffcc00;
@@ -76,4 +76,10 @@
   color: #4caf50;
   font-weight: 700;
   text-shadow: 0 0 6px #4caf50aa;
+}
+
+.end-difficulty {
+  color: #ff9800;
+  font-weight: 700;
+  text-shadow: 0 0 6px #ff9800aa;
 }

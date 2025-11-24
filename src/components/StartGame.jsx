@@ -1,4 +1,3 @@
-// components/StartGame.jsx
 import './StartGame.css';
 
 function StartGame({ difficulty, onChangeDifficulty, onNewGame }) {

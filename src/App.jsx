@@ -12,6 +12,8 @@ const LEVEL_SETS = {
   hard: LEVELS_HARD,
 };
 
+const STATS_STORAGE_KEY = 'maze_stats_v1';
+
 function findPlayerStart(level) {
   for (let y = 0; y < level.levelStructure.length; y++) {
     const x = level.levelStructure[y].indexOf('P');
@@ -51,19 +53,27 @@ function App() {
   const [steps, setSteps] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
-  // обновляем уровень и позицию при смене индекса или сложности
+  const [playerName, setPlayerName] = useState('Игрок');
+
+  const [stats, setStats] = useState(() => {
+    const saved = localStorage.getItem(STATS_STORAGE_KEY);
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // флаг, чтобы не сохранять результат несколько раз
+  const [resultSaved, setResultSaved] = useState(false);
+
+  // сохраняем статистику в localStorage
+  useEffect(() => {
+    localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(stats));
+  }, [stats]);
+
   useEffect(() => {
     const rawLevel = LEVELS[currentLevelIndex];
     setLevel(cleanLevel(rawLevel));
     setPlayerPos(findPlayerStart(rawLevel));
   }, [currentLevelIndex, difficulty]);
 
-  // лог шагов
-  useEffect(() => {
-    console.log('Steps:', steps);
-  }, [steps]);
-
-  // таймер (тикает только когда игра идёт)
   useEffect(() => {
     if (showStartScreen || isGameFinished) return;
 
@@ -73,6 +83,23 @@ function App() {
 
     return () => clearInterval(id);
   }, [showStartScreen, isGameFinished]);
+
+  // добавляем запись ОДИН раз, когда игра закончилась
+  useEffect(() => {
+    if (!isGameFinished || resultSaved) return;
+
+    setStats((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        name: playerName,
+        difficulty,
+        steps,
+        time: elapsedSeconds,
+      },
+    ]);
+    setResultSaved(true);
+  }, [isGameFinished, resultSaved]); // 👈 только эти зависимости
 
   function goToNextLevel() {
     setCurrentLevelIndex((prev) => {
@@ -84,41 +111,63 @@ function App() {
     });
   }
 
-  function handleStartNewGame() {
-    setIsGameFinished(false);
+  function resetRunState() {
     setCurrentLevelIndex(0);
     setSteps(0);
     setElapsedSeconds(0);
-
     const rawLevel = LEVELS[0];
     setLevel(cleanLevel(rawLevel));
     setPlayerPos(findPlayerStart(rawLevel));
+  }
 
-    setShowStartScreen(false); // скрываем старт, показываем игру
+  function handleStartNewGame() {
+    setIsGameFinished(false);
+    setResultSaved(false);
+    resetRunState();
+    setShowStartScreen(false);
   }
 
   function handleChangeDifficulty(newDifficulty) {
     setDifficulty(newDifficulty);
     setIsGameFinished(false);
-    setCurrentLevelIndex(0);
-    setSteps(0);
-    setElapsedSeconds(0);
-
+    setResultSaved(false);
     const firstLevel = LEVEL_SETS[newDifficulty][0];
     setLevel(cleanLevel(firstLevel));
     setPlayerPos(findPlayerStart(firstLevel));
-    // стартовый экран остаётся, игрок потом жмёт "Новая игра"
+    setCurrentLevelIndex(0);
+    setSteps(0);
+    setElapsedSeconds(0);
   }
 
   function handleGoToStart() {
     setIsGameFinished(false);
-    setCurrentLevelIndex(0);
-    setSteps(0);
-    setElapsedSeconds(0);
+    setResultSaved(false);
+    resetRunState();
     setShowStartScreen(true);
   }
 
-  // стартовый экран
+  // 🔹 меняем имя И обновляем последнюю запись в статистике
+  function handleChangePlayerName(newName) {
+    setPlayerName(newName);
+
+    setStats((prev) => {
+      if (!prev.length) return prev;
+      const updated = [...prev];
+      const lastIndex = updated.length - 1;
+      updated[lastIndex] = {
+        ...updated[lastIndex],
+        name: newName,
+      };
+      return updated;
+    });
+  }
+
+  // 🔹 очистка статистики
+  function handleClearStats() {
+    setStats([]);
+    localStorage.removeItem(STATS_STORAGE_KEY);
+  }
+
   if (showStartScreen) {
     return (
       <StartGame
@@ -129,14 +178,18 @@ function App() {
     );
   }
 
-  // экран игры
   return (
     <>
       {isGameFinished ? (
         <EndGame
           steps={steps}
           time={elapsedSeconds}
+          difficulty={difficulty}
           onGoToStart={handleGoToStart}
+          playerName={playerName}
+          onChangePlayerName={handleChangePlayerName}
+          stats={stats}
+          onClearStats={handleClearStats}
         />
       ) : (
         <>
@@ -148,7 +201,6 @@ function App() {
             setSteps={setSteps}
           />
 
-          {/* HUD над полем: ходы + время */}
           <div className="hud">
             <div className="steps-counter">
               Ходы: <span>{steps}</span>
